@@ -1,4 +1,4 @@
-package web
+package main
 
 import (
 	"database/sql"
@@ -18,14 +18,18 @@ type application struct {
 	infoLog       *log.Logger
 	session       *sessions.Session
 	templateCache map[string]*template.Template
-	user          *dbs.UserModel
-	//product       *dbs.ProductModel
-	//category      *dbs.CategoryModel
-	//history       *dbs.OrderHistoryModel
+	client        *dbs.ClientModel
+	convoy        *dbs.ConvoyModel
+	machine       *dbs.MachineModel
+	mhkm          *dbs.MhKmModel
+	service       *dbs.ServiceModel
+	repair        *dbs.RepairModel
+	serviceDone   *dbs.ServiceDoneModel
+	repairDone    *dbs.RepairDoneModel
 }
 
 func main() {
-	dsn := "user=root password=root dbname=v-1831_technic sslmode=disable host=localhost port=3306"
+	dsn := "root:root@tcp(localhost:3306)/v-1831_technic"
 	addr := flag.String("addr", ":4000", "HTTP network address")
 
 	secret := flag.String("secret", "s6Ndh+pPbnzHbS*+9Pk8qGWhTzbpa@ge", "Secret key")
@@ -51,12 +55,17 @@ func main() {
 	session.Lifetime = 12 * time.Hour
 
 	app := &application{
-		errorLog: errorLog,
-		infoLog:  infoLog,
-		session:  session,
-		user:     &dbs.UserModel{DB: db},
-		//product:  &dbs.ProductModel{DB: db},
-		//category: &dbs.CategoryModel{DB: db},
+		errorLog:    errorLog,
+		infoLog:     infoLog,
+		session:     session,
+		client:      &dbs.ClientModel{DB: db},
+		convoy:      &dbs.ConvoyModel{DB: db},
+		machine:     &dbs.MachineModel{DB: db},
+		mhkm:        &dbs.MhKmModel{DB: db},
+		service:     &dbs.ServiceModel{DB: db},
+		repair:      &dbs.RepairModel{DB: db},
+		serviceDone: &dbs.ServiceDoneModel{DB: db},
+		repairDone:  &dbs.RepairDoneModel{DB: db},
 	}
 
 	srv := &http.Server{
