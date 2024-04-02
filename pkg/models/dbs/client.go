@@ -13,7 +13,7 @@ type ClientModel struct {
 	DB *sql.DB
 }
 
-func (m *ClientModel) Insert(clientname, clientmail, clientpass, clientphone, clienttelegram, clientdatereg string, clienttimezone, clienttimeinfo, clientstatus, idclient_idclient uint16) error {
+func (m *ClientModel) Insert(clientname, clientmail, clientpass, clientphone, clienttelegram string) error {
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(clientpass), 12)
 	if err != nil {
 		return err
@@ -21,10 +21,10 @@ func (m *ClientModel) Insert(clientname, clientmail, clientpass, clientphone, cl
 
 	stmt := `
         INSERT INTO client 
-        (clientname, clientmail, clientpass, clientphone, clienttelegram, clientdatereg, clienttimezone, clienttimeinfo, clientstatus, idclient_idclient) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`
+        (clientname, clientmail, clientpass, clientphone, clienttelegram) 
+        VALUES (?, ?, ?, ?, ?);`
 
-	_, err = m.DB.Exec(stmt, clientname, clientmail, string(hashedPassword), clientphone, clienttelegram, clientdatereg, clienttimezone, clienttimeinfo, clientstatus, idclient_idclient)
+	_, err = m.DB.Exec(stmt, clientname, clientmail, string(hashedPassword), clientphone, clienttelegram)
 	if err != nil {
 		if mysqlErr, ok := err.(*mysql.MySQLError); ok && mysqlErr.Number == 1062 {
 			return models.ErrDuplicateEmail

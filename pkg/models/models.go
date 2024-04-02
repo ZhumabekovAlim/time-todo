@@ -13,17 +13,17 @@ var (
 )
 
 type Client struct {
-	IdClient          string `json:"idclient"`
-	ClientName        string `json:"clientname"`
-	ClientMail        string `json:"clientmail"`
-	ClientPass        string `json:"clientpass"`
-	ClientPhone       string `json:"clientphone"`
-	ClientTelegram    string `json:"clienttelegram"`
-	ClientDateReg     string `json:"clientdatereg"`
-	ClientTimeZone    uint16 `json:"clienttimezone"`
-	ClientTimeInfo    uint16 `json:"clienttimeinfo"`
-	ClientStatus      uint16 `json:"clientstatus"`
-	IdcCient_IdClient uint16 `json:"idclient_idclient"`
+	IdClient          sql.NullInt16  `json:"idclient"`
+	ClientName        string         `json:"clientname"`
+	ClientMail        string         `json:"clientmail"`
+	ClientPass        string         `json:"clientpass"`
+	ClientPhone       string         `json:"clientphone"`
+	ClientTelegram    string         `json:"clienttelegram"`
+	ClientDateReg     sql.NullString `json:"clientdatereg"`
+	ClientTimeZone    sql.NullInt16  `json:"clienttimezone"`
+	ClientTimeInfo    sql.NullInt16  `json:"clienttimeinfo"`
+	ClientStatus      sql.NullInt16  `json:"clientstatus"`
+	IdcCient_IdClient sql.NullInt16  `json:"idclient_idclient"`
 }
 
 type Convoy struct {

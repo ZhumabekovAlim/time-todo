@@ -32,7 +32,6 @@ func (app *application) createConvoy(w http.ResponseWriter, r *http.Request) {
 
 func (app *application) getConvoy(w http.ResponseWriter, r *http.Request) {
 	id := r.URL.Query().Get("id")
-
 	if id == "" {
 		app.clientError(w, http.StatusBadRequest)
 		return
