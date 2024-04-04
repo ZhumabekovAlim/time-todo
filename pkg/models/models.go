@@ -3,7 +3,6 @@ package models
 import (
 	"database/sql"
 	"errors"
-	"time"
 )
 
 var (
@@ -39,13 +38,13 @@ type Machine struct {
 	IdMachineIdModel  int            `json:"idmachine_idmodel"`
 	IdMachineIdType   int            `json:"idmachine_idtype"`
 	MachineYear       string         `json:"machineyear"`
-	MachineGosNumber  sql.NullString `json:"machinegosnumber"`
-	MachineOption     sql.NullString `json:"machineoption"`
-	MachineDateCome   sql.NullString `json:"machinedatecome"`
+	MachineGosNumber  string         `json:"machinegosnumber"`
+	MachineOption     string         `json:"machineoption"`
+	MachineDateCome   string         `json:"machinedatecome"`
 	MachineDateOut    sql.NullString `json:"machinedateout"`
 	MachineSeason     int            `json:"machineseason"`
-	MachineMotoHour   int            `json:"machinemotohour"`
 	MachineKilometr   int            `json:"machinekilometr"`
+	MachineMotoHour   int            `json:"machinemotohour"`
 	MachineMiles      int            `json:"machinemiles"`
 	MachineStatus     int            `json:"machinestatus"`
 }
@@ -62,13 +61,13 @@ type Manager struct {
 }
 
 type MhKm struct {
-	IdMHKM          int           `json:"idmhkm"`
-	IdMHKMIdMachine int           `json:"idmhkm_idmachine"`
-	MotoHour        sql.NullInt64 `json:"motohour"`
-	Kilometr        sql.NullInt64 `json:"kilometr"`
-	Miles           sql.NullInt64 `json:"miles"`
-	MHKMDate        time.Time     `json:"mhkmdate"`
-	MHKMName        string        `json:"mhkmname"`
+	IdMHKM          int    `json:"idmhkm"`
+	IdMHKMIdMachine int    `json:"idmhkm_idmachine"`
+	MotoHour        int    `json:"motohour"`
+	Kilometr        int    `json:"kilometr"`
+	Miles           int    `json:"miles"`
+	MHKMDate        string `json:"mhkmdate"`
+	MHKMName        string `json:"mhkmname"`
 }
 
 type Service struct {

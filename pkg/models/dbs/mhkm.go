@@ -11,15 +11,44 @@ type MhKmModel struct {
 	DB *sql.DB
 }
 
-func (m *MhKmModel) Insert(mhkm *models.MhKm) error {
-	stmt := `
+func (m *MhKmModel) Insert(mhkm *models.MhKm, flag string) error {
+
+	if flag == "moto" {
+		var maxMotoHour int
+		err := m.DB.QueryRow("SELECT MAX(motohour) FROM mhkm WHERE idmhkm_idmachine = ?", mhkm.IdMHKMIdMachine).Scan(&maxMotoHour)
+		if err != nil {
+			return err
+		}
+
+		if mhkm.MotoHour > maxMotoHour {
+			stmt := `
         INSERT INTO mhkm
         (idmhkm_idmachine, motohour, kilometr, miles, mhkmdate, mhkmname) 
         VALUES (?, ?, ?, ?, ?, ?);`
 
-	_, err := m.DB.Exec(stmt, mhkm.IdMHKMIdMachine, mhkm.MotoHour, mhkm.Kilometr, mhkm.Miles, mhkm.MHKMDate, mhkm.MHKMName)
-	if err != nil {
-		return err
+			_, err := m.DB.Exec(stmt, mhkm.IdMHKMIdMachine, mhkm.MotoHour, 0, 0, mhkm.MHKMDate, mhkm.MHKMName)
+			if err != nil {
+				return err
+			}
+		}
+	} else if flag == "kilo" {
+		var maxKilometr int
+		err := m.DB.QueryRow("SELECT MAX(kilometr) FROM mhkm WHERE idmhkm_idmachine = ?", mhkm.IdMHKMIdMachine).Scan(&maxKilometr)
+		if err != nil {
+			return err
+		}
+
+		if mhkm.Kilometr > maxKilometr {
+			stmt := `
+        INSERT INTO mhkm
+        (idmhkm_idmachine, motohour, kilometr, miles, mhkmdate, mhkmname) 
+        VALUES (?, ?, ?, ?, ?, ?);`
+
+			_, err := m.DB.Exec(stmt, mhkm.IdMHKMIdMachine, 0, mhkm.Kilometr, 0, mhkm.MHKMDate, mhkm.MHKMName)
+			if err != nil {
+				return err
+			}
+		}
 	}
 
 	return nil

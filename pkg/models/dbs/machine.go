@@ -12,12 +12,10 @@ type MachineModel struct {
 }
 
 func (m *MachineModel) Insert(machine *models.Machine) error {
-	stmt := `
-        INSERT INTO machine 
-        ( idmachine_idconvoy, idmachine_idmodel, idmachine_idtype, machineyear, machinegosnumber, machineoption, machinedatecome, machinedateout, machineseason, machinemotohour, machinekilometr, machinemiles, machinestatus) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`
+	stmt := `INSERT INTO machine (idmachine_idconvoy, idmachine_idmodel, idmachine_idtype, machineyear, machinegosnumber, machineoption, machinedatecome, machineseason, machinemotohour, machinekilometr, machinemiles, machinestatus) 
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`
 
-	_, err := m.DB.Exec(stmt, machine.IdMachine, machine.IdMachineIdConvoy, machine.IdMachineIdModel, machine.IdMachineIdType, machine.MachineYear, machine.MachineGosNumber, machine.MachineOption, machine.MachineDateCome, machine.MachineDateOut, machine.MachineSeason, machine.MachineMotoHour, machine.MachineKilometr, machine.MachineMiles, machine.MachineStatus)
+	_, err := m.DB.Exec(stmt, machine.IdMachineIdConvoy, machine.IdMachineIdModel, machine.IdMachineIdType, machine.MachineYear, machine.MachineGosNumber, machine.MachineOption, machine.MachineDateCome, machine.MachineSeason, machine.MachineMotoHour, machine.MachineKilometr, machine.MachineMiles, machine.MachineStatus)
 	if err != nil {
 		return err
 	}

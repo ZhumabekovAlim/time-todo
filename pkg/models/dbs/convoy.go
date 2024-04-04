@@ -11,13 +11,14 @@ type ConvoyModel struct {
 	DB *sql.DB
 }
 
-func (m *ConvoyModel) Insert(idconvoy int, idconvoy_idclient int, convoyname string, convoystatus int) error {
+func (m *ConvoyModel) Insert(idconvoy_idclient int, convoyname string) error {
+	convoystatus := 1
 	stmt := `
         INSERT INTO convoy 
-        (idconvoy, idconvoy_idclient, convoyname, convoystatus) 
-        VALUES (?, ?, ?, ?);`
+        ( idconvoy_idclient, convoyname, convoystatus) 
+        VALUES (?, ?, ?);`
 
-	_, err := m.DB.Exec(stmt, idconvoy, idconvoy_idclient, convoyname, convoystatus)
+	_, err := m.DB.Exec(stmt, idconvoy_idclient, convoyname, convoystatus)
 	if err != nil {
 		return err
 	}

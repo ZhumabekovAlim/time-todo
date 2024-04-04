@@ -21,7 +21,7 @@ func (app *application) createConvoy(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = app.convoy.Insert(newConvoy.IdConvoy, newConvoy.IdConvoy_IdClient, newConvoy.ConvoyName, newConvoy.ConvoyStatus)
+	err = app.convoy.Insert(newConvoy.IdConvoy_IdClient, newConvoy.ConvoyName)
 	if err != nil {
 		app.serverError(w, err)
 		return

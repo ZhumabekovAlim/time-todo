@@ -21,7 +21,15 @@ func (app *application) createMHKM(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = app.mhkm.Insert(&newMHKM)
+	flag := ""
+
+	if newMHKM.MotoHour > 0 && newMHKM.Kilometr <= 0 && newMHKM.Miles <= 0 {
+		flag = "moto"
+	} else if newMHKM.MotoHour <= 0 && newMHKM.Kilometr > 0 && newMHKM.Miles <= 0 {
+		flag = "kilo"
+	}
+
+	err = app.mhkm.Insert(&newMHKM, flag)
 	if err != nil {
 		app.serverError(w, err)
 		return
@@ -74,7 +82,7 @@ func (app *application) updateMHKM(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) deleteMHKM(w http.ResponseWriter, r *http.Request) {
-	id := r.URL.Query().Get("id")
+	id := r.URL.Query().Get(":id")
 
 	if id == "" {
 		app.clientError(w, http.StatusBadRequest)

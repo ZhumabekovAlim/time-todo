@@ -74,7 +74,7 @@ func (app *application) updateMachine(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) deleteMachine(w http.ResponseWriter, r *http.Request) {
-	id := r.URL.Query().Get("id")
+	id := r.URL.Query().Get(":id")
 
 	if id == "" {
 		app.clientError(w, http.StatusBadRequest)

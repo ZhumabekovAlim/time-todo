@@ -18,22 +18,22 @@ func (app *application) routes() http.Handler {
 	mux.Post("/login", dynamicMiddleware.ThenFunc(app.loginClient))
 
 	// Convoy
-	mux.Post("/create-convoy", dynamicMiddleware.ThenFunc(app.createConvoy))
-	mux.Get("/get-convoy", standardMiddleware.ThenFunc(app.getConvoy))
-	mux.Put("/update-convoy", dynamicMiddleware.ThenFunc(app.updateConvoy))
-	mux.Del("/delete-convoy/:id", dynamicMiddleware.ThenFunc(app.deleteConvoy))
+	mux.Post("/create-convoy", dynamicMiddleware.ThenFunc(app.createConvoy))    //work
+	mux.Get("/get-convoy", standardMiddleware.ThenFunc(app.getConvoy))          //work http://localhost:4000/get-convoy?id=5
+	mux.Put("/update-convoy", dynamicMiddleware.ThenFunc(app.updateConvoy))     //work
+	mux.Del("/delete-convoy/:id", dynamicMiddleware.ThenFunc(app.deleteConvoy)) //work http://localhost:4000/delete-convoy/124
 
 	// Machine
-	mux.Post("/create-machine", dynamicMiddleware.ThenFunc(app.createMachine))
-	mux.Get("/get-machine", standardMiddleware.ThenFunc(app.getMachine))
-	mux.Put("/update-machine", dynamicMiddleware.ThenFunc(app.updateMachine))
-	mux.Del("/delete-machine/:id", dynamicMiddleware.ThenFunc(app.deleteMachine))
+	mux.Post("/create-machine", dynamicMiddleware.ThenFunc(app.createMachine))    //work
+	mux.Get("/get-machine", standardMiddleware.ThenFunc(app.getMachine))          //work http://localhost:4000/get-machine?id=4
+	mux.Put("/update-machine", dynamicMiddleware.ThenFunc(app.updateMachine))     //work
+	mux.Del("/delete-machine/:id", dynamicMiddleware.ThenFunc(app.deleteMachine)) //work http://localhost:4000/delete-machine/34
 
 	// MhKm
-	mux.Post("/create-mhkm", dynamicMiddleware.ThenFunc(app.createMHKM))
-	mux.Get("/get-mhkm", standardMiddleware.ThenFunc(app.getMHKM))
-	mux.Put("/update-mhkm", dynamicMiddleware.ThenFunc(app.updateMHKM))
-	mux.Del("/delete-mhkm/:id", dynamicMiddleware.ThenFunc(app.deleteMHKM))
+	mux.Post("/create-mhkm", dynamicMiddleware.ThenFunc(app.createMHKM))    //work, but if new data error
+	mux.Get("/get-mhkm", standardMiddleware.ThenFunc(app.getMHKM))          //work http://localhost:4000/get-mhkm?id=353
+	mux.Put("/update-mhkm", dynamicMiddleware.ThenFunc(app.updateMHKM))     //work
+	mux.Del("/delete-mhkm/:id", dynamicMiddleware.ThenFunc(app.deleteMHKM)) //work http://localhost:4000/delete-mhkm/355
 
 	// Service
 	mux.Post("/create-service", dynamicMiddleware.ThenFunc(app.createService))
