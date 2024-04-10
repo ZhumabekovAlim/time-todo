@@ -15,7 +15,7 @@ func (m *MhKmModel) Insert(mhkm *models.MhKm, flag string) error {
 
 	if flag == "moto" {
 		var maxMotoHour int
-		err := m.DB.QueryRow("SELECT MAX(motohour) FROM mhkm WHERE idmhkm_idmachine = ?", mhkm.IdMHKMIdMachine).Scan(&maxMotoHour)
+		err := m.DB.QueryRow("SELECT COALESCE(MAX(motohour), 0) FROM mhkm WHERE idmhkm_idmachine = ?", mhkm.IdMHKMIdMachine).Scan(&maxMotoHour)
 		if err != nil {
 			return err
 		}
@@ -33,7 +33,7 @@ func (m *MhKmModel) Insert(mhkm *models.MhKm, flag string) error {
 		}
 	} else if flag == "kilo" {
 		var maxKilometr int
-		err := m.DB.QueryRow("SELECT MAX(kilometr) FROM mhkm WHERE idmhkm_idmachine = ?", mhkm.IdMHKMIdMachine).Scan(&maxKilometr)
+		err := m.DB.QueryRow("SELECT COALESCE(MAX(kilometr), 0) FROM mhkm WHERE idmhkm_idmachine = ?", mhkm.IdMHKMIdMachine).Scan(&maxKilometr)
 		if err != nil {
 			return err
 		}

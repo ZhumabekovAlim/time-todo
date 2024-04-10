@@ -120,3 +120,14 @@ type RepairDone struct {
 	RepairDoneDate        string        `json:"repairdonedate"`
 	RepairDoneName        string        `json:"repairdonename"`
 }
+
+type MachineInfo struct {
+	TypeRus          string `json:"type_rus"`
+	Marka            string `json:"marka"`
+	Model            string `json:"model"`
+	MachineYear      int    `json:"machineyear"`
+	MachineGosnumber string `json:"machinegosnumber"`
+}
+type ConvoyInfo struct {
+	IdConvoy string `json:"idconvoy"`
+}

@@ -26,6 +26,8 @@ type application struct {
 	repair        *dbs.RepairModel
 	serviceDone   *dbs.ServiceDoneModel
 	repairDone    *dbs.RepairDoneModel
+	machineInfo   *dbs.MachineInfoModel
+	convoyInfo    *dbs.ConvoyInfoModel
 }
 
 func main() {
@@ -66,6 +68,8 @@ func main() {
 		repair:      &dbs.RepairModel{DB: db},
 		serviceDone: &dbs.ServiceDoneModel{DB: db},
 		repairDone:  &dbs.RepairDoneModel{DB: db},
+		machineInfo: &dbs.MachineInfoModel{DB: db},
+		convoyInfo:  &dbs.ConvoyInfoModel{DB: db},
 	}
 
 	srv := &http.Server{
