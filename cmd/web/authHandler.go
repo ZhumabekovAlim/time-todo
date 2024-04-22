@@ -58,18 +58,7 @@ func (app *application) loginClient(w http.ResponseWriter, r *http.Request) {
 	}
 
 	responseUser, err := app.client.GetUserById(strconv.Itoa(clientId))
-	//if app.session.Exists(r, "authenticatedUserID") {
-	//	w.WriteHeader(http.StatusOK)
-	//	_, err := w.Write(responseUser)
-	//	if err != nil {
-	//		return
-	//	}
-	//	return
-	//}
-	//app.session.Put(r, "authenticatedUserID", client)
-	//if err != nil {
-	//	return
-	//}
+
 	_, err = w.Write(responseUser)
 	if err != nil {
 		return
