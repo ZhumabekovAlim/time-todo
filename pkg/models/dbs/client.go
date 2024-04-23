@@ -4,7 +4,6 @@ import (
 	"database/sql"
 	"encoding/json"
 	"errors"
-	"github.com/go-sql-driver/mysql"
 	"golang.org/x/crypto/bcrypt"
 	"time-todo/pkg/models"
 )
@@ -13,7 +12,33 @@ type ClientModel struct {
 	DB *sql.DB
 }
 
+var (
+	ErrDuplicateEmail = errors.New("duplicate email")
+	ErrDuplicatePhone = errors.New("duplicate phone")
+)
+
 func (m *ClientModel) Insert(clientname, clientmail, clientpass, clientphone, clienttelegram string) error {
+
+	var exists int
+	emailCheckQuery := "SELECT COUNT(*) FROM client WHERE clientmail = ?"
+	phoneCheckQuery := "SELECT COUNT(*) FROM client WHERE clientphone = ?"
+
+	err := m.DB.QueryRow(emailCheckQuery, clientmail).Scan(&exists)
+	if err != nil {
+		return err
+	}
+	if exists > 0 {
+		return ErrDuplicateEmail
+	}
+
+	err = m.DB.QueryRow(phoneCheckQuery, clientphone).Scan(&exists)
+	if err != nil {
+		return err
+	}
+	if exists > 0 {
+		return ErrDuplicatePhone
+	}
+
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(clientpass), 12)
 	if err != nil {
 		return err
@@ -21,18 +46,39 @@ func (m *ClientModel) Insert(clientname, clientmail, clientpass, clientphone, cl
 
 	stmt := `
         INSERT INTO client 
-        (clientname, clientmail, clientpass, clientphone, clienttelegram) 
-        VALUES (?, ?, ?, ?, ?);`
+        (clientname, clientmail, clientpass, clientphone, clienttelegram, clientstatus) 
+        VALUES (?, ?, ?, ?, ?, ?);`
 
-	_, err = m.DB.Exec(stmt, clientname, clientmail, string(hashedPassword), clientphone, clienttelegram)
+	_, err = m.DB.Exec(stmt, clientname, clientmail, string(hashedPassword), clientphone, clienttelegram, 0)
 	if err != nil {
-		if mysqlErr, ok := err.(*mysql.MySQLError); ok && mysqlErr.Number == 1062 {
-			return models.ErrDuplicateEmail
-		}
 		return err
 	}
 
 	return nil
+}
+
+func (m *ClientModel) VerifyClient(email string) (int, error) {
+	var clientID int
+
+	query := `SELECT idclient FROM client WHERE clientmail = ? AND clientstatus = 0;`
+	err := m.DB.QueryRow(query, email).Scan(&clientID)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return 0, errors.New("no matching unverified client found")
+		}
+		return 0, err
+	}
+
+	stmt := `
+        UPDATE client
+        SET clientstatus = 1
+        WHERE idclient = ?;`
+	_, err = m.DB.Exec(stmt, clientID)
+	if err != nil {
+		return 0, err
+	}
+
+	return clientID, nil
 }
 
 //	func (m *ClientModel) GetAllUsers() ([]byte, error) {
@@ -99,7 +145,7 @@ func (m *ClientModel) GetUserById(id string) ([]byte, error) {
 func (m *ClientModel) Authenticate(email, password string) (int, error) {
 	var id int
 	var hashedPassword []byte
-	stmt := "SELECT idclient, clientpass FROM client WHERE clientmail = ?"
+	stmt := "SELECT idclient, clientpass FROM client WHERE clientmail = ? AND clientstatus = 1"
 	row := m.DB.QueryRow(stmt, email)
 	err := row.Scan(&id, &hashedPassword)
 	if err != nil {

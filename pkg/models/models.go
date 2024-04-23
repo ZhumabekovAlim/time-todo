@@ -129,5 +129,9 @@ type MachineInfo struct {
 	MachineGosnumber string `json:"machinegosnumber"`
 }
 type ConvoyInfo struct {
-	IdConvoy string `json:"idconvoy"`
+	IdConvoy   string `json:"idconvoy"`
+	ConvoyName string `json:"convoyname"`
+}
+
+type GuideInfo struct {
 }
