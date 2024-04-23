@@ -16,6 +16,7 @@ func (app *application) routes() http.Handler {
 	// Client
 	mux.Post("/create-client", dynamicMiddleware.ThenFunc(app.signupClient))
 	mux.Post("/login", dynamicMiddleware.ThenFunc(app.loginClient))
+	mux.Post("/verification", dynamicMiddleware.ThenFunc(app.verifyClient))
 
 	// Convoy
 	mux.Post("/create-convoy", dynamicMiddleware.ThenFunc(app.createConvoy))    //work
@@ -63,6 +64,6 @@ func (app *application) routes() http.Handler {
 
 	mux.Get("/get-machine-info", standardMiddleware.ThenFunc(app.getMachineInfo)) //work http://localhost:4000/get-machine-info?id_convoy=1
 	mux.Get("/get-convoy-info", standardMiddleware.ThenFunc(app.getConvoyInfo))   //work http://localhost:4000/get-convoy-info?id_client=14
-
+	mux.Get("/get-number-by-status", standardMiddleware.ThenFunc(app.getNumberMachineByStasus))
 	return standardMiddleware.Then(mux)
 }

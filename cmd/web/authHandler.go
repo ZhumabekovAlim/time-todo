@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"database/sql"
 	"encoding/json"
 	"errors"
 	"io"
@@ -63,6 +64,54 @@ func (app *application) loginClient(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		return
 	}
+}
+
+func (app *application) verifyClient(w http.ResponseWriter, r *http.Request) {
+	type verificationRequest struct {
+		Email string `json:"clientmail"`
+		Code  string `json:"code"`
+	}
+
+	var req verificationRequest
+
+	body, _ := io.ReadAll(r.Body)
+	r.Body = io.NopCloser(bytes.NewBuffer(body))
+
+	err := json.NewDecoder(r.Body).Decode(&req)
+	if err != nil {
+		app.clientError(w, http.StatusBadRequest)
+		return
+	}
+	if req.Code != "12345" {
+		app.serverError(w, err)
+		return
+	}
+	clientID, err := app.client.VerifyClient(req.Email)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			app.clientError(w, http.StatusNotFound)
+			return
+		} else {
+			app.serverError(w, err)
+			return
+		}
+	}
+
+	response := struct {
+		ClientID int `json:"idclient"`
+	}{
+		ClientID: clientID,
+	}
+
+	responseData, err := json.Marshal(response)
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write(responseData)
 }
 
 //

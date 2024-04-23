@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	"flag"
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/golangcollege/sessions"
 	"github.com/rs/cors"
 	"html/template"
@@ -31,7 +32,7 @@ type application struct {
 }
 
 func main() {
-	dsn := "root:root@tcp(localhost:3306)/v-1831_technic"
+	dsn := "root:@tcp(localhost:3306)/v-1831_technic"
 	addr := flag.String("addr", ":4000", "HTTP network address")
 
 	secret := flag.String("secret", "s6Ndh+pPbnzHbS*+9Pk8qGWhTzbpa@ge", "Secret key")
