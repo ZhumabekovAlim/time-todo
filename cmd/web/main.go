@@ -17,6 +17,7 @@ import (
 type application struct {
 	errorLog      *log.Logger
 	infoLog       *log.Logger
+	logger        *log.Logger
 	session       *sessions.Session
 	templateCache map[string]*template.Template
 	client        *dbs.ClientModel
@@ -37,6 +38,7 @@ type application struct {
 }
 
 func main() {
+	// todo: go get -u gorm.io/gorm
 	dsn := "root:@tcp(localhost:3306)/v-1831_technic"
 	addr := flag.String("addr", ":4000", "HTTP network address")
 
@@ -52,6 +54,7 @@ func main() {
 
 	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
 	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
+	logger := log.New(os.Stdout, "", log.Ldate|log.Ltime)
 
 	db, err := openDB(dsn)
 	if err != nil {
@@ -65,6 +68,7 @@ func main() {
 	app := &application{
 		errorLog:    errorLog,
 		infoLog:     infoLog,
+		logger:      logger,
 		session:     session,
 		client:      &dbs.ClientModel{DB: db},
 		convoy:      &dbs.ConvoyModel{DB: db},
