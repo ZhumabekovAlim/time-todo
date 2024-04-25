@@ -6,6 +6,9 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/golangcollege/sessions"
 	"github.com/rs/cors"
+	"gorm.io/driver/mysql"
+	_ "gorm.io/driver/mysql"
+	"gorm.io/gorm"
 	"html/template"
 	"log"
 	"net/http"
@@ -35,11 +38,12 @@ type application struct {
 	marka         *dbs.MarkaModel
 	types         *dbs.TypeModel
 	models        *dbs.ModelModel
+	gormDB        *gorm.DB
 }
 
 func main() {
 	// todo: go get -u gorm.io/gorm
-	dsn := "root:@tcp(localhost:3306)/v-1831_technic"
+	dsn := "root:rootpassword@tcp(localhost:3307)/technic"
 	addr := flag.String("addr", ":4000", "HTTP network address")
 
 	secret := flag.String("secret", "s6Ndh+pPbnzHbS*+9Pk8qGWhTzbpa@ge", "Secret key")
@@ -62,6 +66,11 @@ func main() {
 	}
 	defer db.Close()
 
+	gormDB, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	if err != nil {
+		log.Fatal("gormDB failed to connect")
+	}
+
 	session := sessions.New([]byte(*secret))
 	session.Lifetime = 12 * time.Hour
 
@@ -81,10 +90,11 @@ func main() {
 		machineInfo: &dbs.MachineInfoModel{DB: db},
 		convoyInfo:  &dbs.ConvoyInfoModel{DB: db},
 		infoPhoto:   &dbs.InfoPhotoModel{DB: db},
-		balance:     &dbs.BalanceModel{DB: db},
+		balance:     &dbs.BalanceModel{DB: db, GormDB: gormDB},
 		marka:       &dbs.MarkaModel{DB: db},
 		types:       &dbs.TypeModel{DB: db},
 		models:      &dbs.ModelModel{DB: db},
+		gormDB:      gormDB,
 	}
 
 	srv := &http.Server{

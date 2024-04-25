@@ -2,11 +2,13 @@ package dbs
 
 import (
 	"database/sql"
+	"gorm.io/gorm"
 	"time-todo/pkg/models"
 )
 
 type BalanceModel struct {
-	DB *sql.DB
+	DB     *sql.DB
+	GormDB *gorm.DB
 }
 
 func (m *BalanceModel) Insert(balance *models.Balance) error {

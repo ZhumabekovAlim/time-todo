@@ -89,13 +89,13 @@ type Repair struct {
 }
 
 type Balance struct {
-	IdBalance         int    `json:"idbalance"`
-	IdBalanceIdClient int    `json:"idbalance_idclient"`
-	BalanceDateStart  string `json:"balancedatestart"`
-	BalanceDateStop   string `json:"balancedatestop"`
-	Balance           int    `json:"balance"`
-	BalanceCaption    string `json:"balancecaption"`
-	BalanceStatus     int    `json:"balancestatus"`
+	IdBalance         int64  `json:"idbalance" gorm:"column:idbalance;primaryKey"`
+	IdBalanceIdClient int64  `json:"idbalance_idclient" gorm:"column:idbalance_idclient"`
+	BalanceDateStart  string `json:"balancedatestart" gorm:"column:balancedatestart"`
+	BalanceDateStop   string `json:"balancedatestop" gorm:"column:balancedatestop"`
+	Balance           int64  `json:"balance" gorm:"column:balance"`
+	BalanceCaption    string `json:"balancecaption" gorm:"column:balancecaption"`
+	BalanceStatus     int64  `json:"balancestatus" gorm:"column:balancestatus"`
 }
 
 type ServiceDone struct {

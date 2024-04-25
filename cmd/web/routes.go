@@ -12,6 +12,7 @@ func (app *application) routes() http.Handler {
 	dynamicMiddleware := alice.New(app.session.Enable)
 
 	mux := pat.New()
+	//router := httprouter.New()
 
 	// Client
 	mux.Post("/create-client", dynamicMiddleware.ThenFunc(app.signupClient))
@@ -83,7 +84,6 @@ func (app *application) routes() http.Handler {
 
 	// Balance
 	mux.Post("/create-balance/:id", dynamicMiddleware.ThenFunc(app.createBalance)) // work http://localhost:4000/create-balance/1
-
 	return standardMiddleware.Then(mux)
 
 }
