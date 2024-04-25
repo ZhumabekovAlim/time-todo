@@ -48,6 +48,27 @@ func (app *application) getMachineInfo(w http.ResponseWriter, r *http.Request) {
 	w.Write(machineInfoData)
 }
 
+func (app *application) getOneMachineInfo(w http.ResponseWriter, r *http.Request) {
+	id_machine := r.URL.Query().Get("id")
+	if id_machine == "" {
+		app.clientError(w, http.StatusBadRequest)
+		return
+	}
+
+	machineInfoData, err := app.machineInfo.GetOneMachineInfo(id_machine)
+	if err != nil {
+		if errors.Is(err, models.ErrNoRecord) {
+			app.clientError(w, http.StatusNotFound)
+		} else {
+			app.serverError(w, err)
+		}
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(machineInfoData)
+}
+
 func (app *application) getNumberMachineByStasus(w http.ResponseWriter, r *http.Request) {
 	id_convoy := r.URL.Query().Get("id_convoy")
 	if id_convoy == "" {

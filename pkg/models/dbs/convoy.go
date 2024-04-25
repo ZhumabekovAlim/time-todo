@@ -59,7 +59,7 @@ func (m *ConvoyModel) UpdateConvoy(convoy *models.Convoy) error {
     WHERE
       idconvoy = ?`
 
-	_, err := m.DB.Exec(stmt, convoy.IdConvoy_IdClient, convoy.ConvoyName, convoy.ConvoyStatus, convoy.IdConvoy)
+	_, err := m.DB.Exec(stmt, convoy.IdConvoy_IdClient, convoy.ConvoyName, 1, convoy.IdConvoy)
 	if err != nil {
 		return err
 	}

@@ -65,5 +65,25 @@ func (app *application) routes() http.Handler {
 	mux.Get("/get-machine-info", standardMiddleware.ThenFunc(app.getMachineInfo)) //work http://localhost:4000/get-machine-info?id_convoy=1
 	mux.Get("/get-convoy-info", standardMiddleware.ThenFunc(app.getConvoyInfo))   //work http://localhost:4000/get-convoy-info?id_client=14
 	mux.Get("/get-number-by-status", standardMiddleware.ThenFunc(app.getNumberMachineByStasus))
+	mux.Get("/get-one-machine-info", standardMiddleware.ThenFunc(app.getOneMachineInfo))
+
+	// Info photo
+	mux.Post("/create-info-photo", dynamicMiddleware.ThenFunc(app.createInfoPhoto))
+	mux.Get("/get-info-photo", standardMiddleware.ThenFunc(app.getInfoPhoto))          // work http://localhost:4000/get-info-photo?id=60
+	mux.Del("/delete-info-photo/:id", dynamicMiddleware.ThenFunc(app.deleteInfoPhoto)) //work http://localhost:4000/delete-info-photo/60
+
+	// Marka
+	mux.Get("/get-all-markas", standardMiddleware.ThenFunc(app.getAllMarkas))
+
+	// Types
+	mux.Get("/get-all-types", standardMiddleware.ThenFunc(app.getAllTypes))
+
+	// Model
+	mux.Get("/get-all-models", standardMiddleware.ThenFunc(app.getAllModels))
+
+	// Balance
+	mux.Post("/create-balance/:id", dynamicMiddleware.ThenFunc(app.createBalance)) // work http://localhost:4000/create-balance/1
+
 	return standardMiddleware.Then(mux)
+
 }

@@ -89,13 +89,13 @@ type Repair struct {
 }
 
 type Balance struct {
-	IdBalance         int            `json:"idbalance"`
-	IdBalanceIdClient int            `json:"idbalance_idclient"`
-	BalanceDateStart  string         `json:"balancedatestart"`
-	BalanceDateStop   sql.NullString `json:"balancedatestop"`
-	Balance           int            `json:"balance"`
-	BalanceCaption    string         `json:"balancecaption"`
-	BalanceStatus     int            `json:"balancestatus"`
+	IdBalance         int    `json:"idbalance"`
+	IdBalanceIdClient int    `json:"idbalance_idclient"`
+	BalanceDateStart  string `json:"balancedatestart"`
+	BalanceDateStop   string `json:"balancedatestop"`
+	Balance           int    `json:"balance"`
+	BalanceCaption    string `json:"balancecaption"`
+	BalanceStatus     int    `json:"balancestatus"`
 }
 
 type ServiceDone struct {
@@ -122,11 +122,21 @@ type RepairDone struct {
 }
 
 type MachineInfo struct {
-	TypeRus          string `json:"type_rus"`
-	Marka            string `json:"marka"`
-	Model            string `json:"model"`
-	MachineYear      int    `json:"machineyear"`
-	MachineGosnumber string `json:"machinegosnumber"`
+	IdMachine         int    `json:"id_machine"`
+	TypeRus           string `json:"type_rus"`
+	Marka             string `json:"marka"`
+	Model             string `json:"model"`
+	MachineYear       int    `json:"machine_year"`
+	MachineGosNumber  string `json:"machine_gos_number"`
+	MachineStatus     int    `json:"machine_status"`
+	MachineDateCome   string `json:"machine_date_come"`
+	MachineOption     string `json:"machine_option"`
+	MachineSeason     int    `json:"machine_season"`
+	MachineKilometr   int    `json:"machine_kilometr"`
+	MachineMotoHour   int    `json:"machine_moto_hour"`
+	MachineMiles      int    `json:"machine_miles"`
+	MachineStatusWord string `json:"machine_status_word"`
+	MachineSeasonWord string `json:"machine_season_word"`
 }
 type ConvoyInfo struct {
 	IdConvoy   string `json:"idconvoy"`
@@ -134,4 +144,27 @@ type ConvoyInfo struct {
 }
 
 type GuideInfo struct {
+}
+
+type InfoPhoto struct {
+	IdInfoPhoto       int    `json:"idinfophoto"`
+	IdInfoPhotoIdInfo int    `json:"idinfophoto_idinfo"`
+	InfoPhoto         string `json:"infophoto"`
+}
+
+type Type struct {
+	IdType  int    `json:"idtype"`
+	TypeRus string `json:"type_rus"`
+}
+
+type Marka struct {
+	IdMarka  string `json:"idmarka"`
+	MarkaRus string `json:"marka_rus"`
+}
+
+type Model struct {
+	IdModel        string `json:"idmodel"`
+	IdModelIdMarka string `json:"idmodel_idmarka"`
+	Model          string `json:"model"`
+	ModelStatus    int    `json:"modelstatus"`
 }

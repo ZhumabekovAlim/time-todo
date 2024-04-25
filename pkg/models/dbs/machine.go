@@ -24,7 +24,7 @@ VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`
 }
 
 func (m *MachineModel) GetMachineById(id string) ([]byte, error) {
-	stmt := `SELECT * FROM machine WHERE idmachine = ?`
+	stmt := `SELECT * FROM machine WHERE machine.idmachine = ?`
 
 	machineRow := m.DB.QueryRow(stmt, id)
 
@@ -50,23 +50,20 @@ func (m *MachineModel) UpdateMachine(machine *models.Machine) error {
 	stmt := `
     UPDATE machine
     SET
-      idmachine_idconvoy = ?,
       idmachine_idmodel = ?,
       idmachine_idtype = ?,
       machineyear = ?,
       machinegosnumber = ?,
       machineoption = ?,
       machinedatecome = ?,
-      machinedateout = ?,
       machineseason = ?,
       machinemotohour = ?,
       machinekilometr = ?,
       machinemiles = ?,
-      machinestatus = ?
     WHERE
       idmachine = ?`
 
-	_, err := m.DB.Exec(stmt, machine.IdMachineIdConvoy, machine.IdMachineIdModel, machine.IdMachineIdType, machine.MachineYear, machine.MachineGosNumber, machine.MachineOption, machine.MachineDateCome, machine.MachineDateOut, machine.MachineSeason, machine.MachineMotoHour, machine.MachineKilometr, machine.MachineMiles, machine.MachineStatus, machine.IdMachine)
+	_, err := m.DB.Exec(stmt, machine.IdMachineIdModel, machine.IdMachineIdType, machine.MachineYear, machine.MachineGosNumber, machine.MachineOption, machine.MachineDateCome, machine.MachineDateOut, machine.MachineSeason, machine.MachineMotoHour, machine.MachineKilometr, machine.MachineMiles, machine.MachineStatus, machine.IdMachine)
 	if err != nil {
 		return err
 	}
