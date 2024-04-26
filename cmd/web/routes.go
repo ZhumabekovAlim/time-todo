@@ -84,6 +84,8 @@ func (app *application) routes() http.Handler {
 
 	// Balance
 	mux.Post("/create-balance/:id", dynamicMiddleware.ThenFunc(app.createBalance)) // work http://localhost:4000/create-balance/1
-	return standardMiddleware.Then(mux)
+	mux.Del("/delete-balance/:id", dynamicMiddleware.ThenFunc(app.deleteBalance))  // work http://localhost:4000/delete-balance/1
+	mux.Put("/update-balance/:id", dynamicMiddleware.ThenFunc(app.updateBalance))  // work http://localhost:4000/delete-balance/1
 
+	return standardMiddleware.Then(mux)
 }
